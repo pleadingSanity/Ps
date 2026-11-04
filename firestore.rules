@@ -1,0 +1,210 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net: Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Global Helpers
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Validation Blueprints
+    function isValidUser(data, userId) {
+      return data.keys().hasAll(['uid', 'email', 'displayName', 'createdAt', 'lastActive', 'isCreator'])
+        && data.keys().hasOnly(['uid', 'email', 'displayName', 'photoURL', 'createdAt', 'lastActive', 'isCreator'])
+        && data.uid == userId
+        && data.uid == request.auth.uid
+        && data.email is string && data.email.size() >= 3 && data.email.size() <= 254
+        && data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100
+        && (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1024))
+        && data.createdAt is timestamp
+        && data.lastActive is timestamp
+        && data.isCreator is bool;
+    }
+
+    function isValidProfile(data, userId) {
+      return data.keys().hasAll(['uid', 'displayName', 'bio', 'isFoundingCreator', 'joinedAt'])
+        && data.keys().hasOnly(['uid', 'displayName', 'photoURL', 'bio', 'youtube', 'twitter', 'instagram', 'tiktok', 'website', 'isFoundingCreator', 'joinedAt', 'updatedAt'])
+        && data.uid == userId
+        && data.uid == request.auth.uid
+        && data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100
+        && (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1024))
+        && data.bio is string && data.bio.size() <= 600
+        && (!('youtube' in data) || (data.youtube is string && data.youtube.size() <= 300))
+        && (!('twitter' in data) || (data.twitter is string && data.twitter.size() <= 300))
+        && (!('instagram' in data) || (data.instagram is string && data.instagram.size() <= 300))
+        && (!('tiktok' in data) || (data.tiktok is string && data.tiktok.size() <= 300))
+        && (!('website' in data) || (data.website is string && data.website.size() <= 300))
+        && data.isFoundingCreator is bool
+        && data.joinedAt is timestamp
+        && (!('updatedAt' in data) || data.updatedAt is timestamp);
+    }
+
+    function isValidFollow(data) {
+      return data.keys().hasAll(['followerId', 'followingId', 'createdAt'])
+        && data.keys().hasOnly(['followerId', 'followingId', 'createdAt'])
+        && data.followerId == request.auth.uid
+        && isValidId(data.followerId)
+        && isValidId(data.followingId)
+        && data.followerId != data.followingId
+        && data.createdAt is timestamp;
+    }
+
+    function isValidLive(data) {
+      return data.keys().hasAll(['creatorId', 'creatorName', 'title', 'description', 'streamUrl', 'status', 'scheduledFor', 'isPublic', 'replayAvailable', 'createdAt'])
+        && data.keys().hasOnly(['creatorId', 'creatorName', 'title', 'description', 'streamUrl', 'status', 'scheduledFor', 'isPublic', 'replayAvailable', 'createdAt'])
+        && data.creatorId == request.auth.uid
+        && isValidId(data.creatorId)
+        && data.creatorName is string && data.creatorName.size() >= 1 && data.creatorName.size() <= 100
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 160
+        && data.description is string && data.description.size() <= 1000
+        && data.streamUrl is string && data.streamUrl.size() <= 500
+        && data.status in ['live', 'scheduled', 'past']
+        && data.scheduledFor is string && data.scheduledFor.size() <= 100
+        && data.isPublic is bool
+        && data.replayAvailable is bool
+        && data.createdAt is timestamp;
+    }
+
+    function isValidPost(data) {
+      return data.keys().hasAll(['authorId', 'authorName', 'content', 'themeTag', 'visibility', 'createdAt'])
+        && data.keys().hasOnly(['authorId', 'authorName', 'content', 'themeTag', 'visibility', 'createdAt'])
+        && data.authorId == request.auth.uid
+        && isValidId(data.authorId)
+        && data.authorName is string && data.authorName.size() >= 1 && data.authorName.size() <= 100
+        && data.content is string && data.content.size() >= 1 && data.content.size() <= 2000
+        && data.themeTag is string && data.themeTag.size() >= 1 && data.themeTag.size() <= 80
+        && data.visibility in ['public', 'friends']
+        && data.createdAt is timestamp;
+    }
+
+    function isValidCreatorApplication(data) {
+      return data.keys().hasAll(['userId', 'displayName', 'why', 'links', 'status', 'submittedAt'])
+        && data.keys().hasOnly(['userId', 'displayName', 'why', 'links', 'status', 'submittedAt'])
+        && data.userId == request.auth.uid
+        && isValidId(data.userId)
+        && data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100
+        && data.why is string && data.why.size() >= 5 && data.why.size() <= 1500
+        && data.links is string && data.links.size() <= 500
+        && data.status == 'pending'
+        && data.submittedAt is timestamp;
+    }
+
+    function isValidMoodLog(data, userId) {
+      return data.keys().hasAll(['userId', 'date', 'score', 'moodLabel', 'energyLevel', 'createdAt'])
+        && data.keys().hasOnly(['userId', 'date', 'score', 'moodLabel', 'energyLevel', 'note', 'createdAt'])
+        && data.userId == request.auth.uid
+        && data.userId == userId
+        && isValidId(data.userId)
+        && data.date is string && data.date.size() >= 8 && data.date.size() <= 10
+        && data.score is number && data.score >= 1 && data.score <= 5
+        && data.moodLabel is string && data.moodLabel.size() >= 1 && data.moodLabel.size() <= 60
+        && data.energyLevel in ['low', 'balanced', 'high']
+        && (!('note' in data) || (data.note is string && data.note.size() <= 500))
+        && data.createdAt is timestamp;
+    }
+
+    // 1. Private Users Collection (PII Isolated: email restricted strictly to owner)
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming(), userId)
+        && incoming().createdAt == request.time
+        && incoming().lastActive == request.time
+        && incoming().isCreator == false;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUser(incoming(), userId)
+        && incoming().uid == existing().uid
+        && incoming().email == existing().email
+        && incoming().createdAt == existing().createdAt
+        && incoming().isCreator == existing().isCreator
+        && incoming().lastActive == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'lastActive']);
+
+      // Private daily mood logs & 30-day sanity journey check-ins
+      match /mood_logs/{logDate} {
+        allow get, list: if isOwner(userId) && isValidId(userId);
+        allow create, update: if isOwner(userId) && isValidId(userId) && isValidMoodLog(incoming(), userId)
+          && incoming().createdAt == request.time;
+        allow delete: if isOwner(userId) && isValidId(userId);
+      }
+    }
+
+    // 2. Public Profiles Collection (No PII)
+    match /profiles/{userId} {
+      allow get: if isValidId(userId);
+      allow list: if resource.data.isFoundingCreator == true || resource.data.uid == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId) && isValidProfile(incoming(), userId)
+        && incoming().joinedAt == request.time
+        && incoming().isFoundingCreator == false;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidProfile(incoming(), userId)
+        && incoming().uid == existing().uid
+        && incoming().joinedAt == existing().joinedAt
+        && incoming().isFoundingCreator == existing().isFoundingCreator
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'bio', 'youtube', 'twitter', 'instagram', 'tiktok', 'website', 'updatedAt']);
+    }
+
+    // 3. Follows Collection
+    match /follows/{followId} {
+      allow get: if isSignedIn() && isValidId(followId) && resource.data.followerId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.followerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(followId) && isValidFollow(incoming())
+        && incoming().createdAt == request.time
+        && exists(/databases/$(database)/documents/profiles/$(incoming().followingId));
+      allow delete: if isSignedIn() && isValidId(followId) && resource.data.followerId == request.auth.uid;
+    }
+
+    // 4. Lives Collection
+    match /lives/{liveId} {
+      allow get: if isValidId(liveId) && resource.data.isPublic == true;
+      allow list: if resource.data.isPublic == true;
+      allow create: if isSignedIn() && isValidId(liveId) && isValidLive(incoming())
+        && incoming().createdAt == request.time
+        && exists(/databases/$(database)/documents/users/$(incoming().creatorId));
+      allow update: if isSignedIn() && isValidId(liveId) && isValidLive(incoming())
+        && existing().creatorId == request.auth.uid
+        && incoming().creatorId == existing().creatorId
+        && incoming().createdAt == existing().createdAt
+        && existing().status != 'past'
+        && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'description', 'streamUrl', 'status', 'scheduledFor', 'replayAvailable']);
+      allow delete: if isSignedIn() && isValidId(liveId) && resource.data.creatorId == request.auth.uid;
+    }
+
+    // 5. Posts Collection
+    match /posts/{postId} {
+      allow get: if isValidId(postId) && (resource.data.visibility == 'public' || (isSignedIn() && resource.data.authorId == request.auth.uid));
+      allow list: if resource.data.visibility == 'public';
+      allow create: if isSignedIn() && isValidId(postId) && isValidPost(incoming())
+        && incoming().createdAt == request.time
+        && exists(/databases/$(database)/documents/users/$(incoming().authorId));
+      allow delete: if isSignedIn() && isValidId(postId) && resource.data.authorId == request.auth.uid;
+    }
+
+    // 6. Creator Applications Collection
+    match /creator_applications/{appId} {
+      allow get: if isSignedIn() && isValidId(appId) && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(appId) && isValidCreatorApplication(incoming())
+        && incoming().submittedAt == request.time
+        && exists(/databases/$(database)/documents/users/$(incoming().userId));
+    }
+  }
+}

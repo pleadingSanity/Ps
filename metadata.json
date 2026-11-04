@@ -1,0 +1,6 @@
+{
+  "name": "Pleading Sanity — Rise From Madness",
+  "description": "A free mental health sanctuary built by Shane Cooper from lived experience. Featuring Arron AI Companion, the New Gen Bible, Manifesto, Creator Hub, Live Sanctuary, and 12 calm cosmic games.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

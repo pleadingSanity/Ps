@@ -1,0 +1,125 @@
+# ==============================================================
+# PLEADING SANITY — AUTOMATED BUILD & 136-TEST DEPLOYMENT GATE
+# Evolution, Not Erasure · Rise From Madness · Love Over Money
+# Runs `npm install` and `npm test` under Node.js 24 on every push
+# and pull request to `main`, enforcing all 136 tests pass with
+# 0 failures before allowing a production deployment merge.
+# ==============================================================
+
+name: Verify Build & 136-Test Production Gate
+
+run-name: Verify 136 Tests & Build • ${{ github.sha }}
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  MIN_PASSING_TESTS: '136'
+  CANONICAL_DOMAIN: 'https://pleadingsanity.co.uk'
+
+jobs:
+  verify-136-tests-and-build:
+    name: Node 24 — npm install & npm test (136/136 Required)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Verify Node & npm Runtime Versions
+        run: |
+          echo "Node version: $(node -v)"
+          echo "npm version: $(npm -v)"
+
+      - name: Run npm install
+        run: npm install --no-audit --no-fund
+
+      - name: Run Sanctuary Pre-Build Integrity Guard (if present)
+        run: |
+          if [ -f "scripts/validate-build.cjs" ]; then
+            node scripts/validate-build.cjs
+          fi
+
+      - name: Run npm test & Enforce 136 Passing Tests Gate
+        run: |
+          set -o pipefail
+          npm test | tee /tmp/test-output.log
+          node - << 'EOF'
+          const fs = require('fs');
+          const minTests = parseInt(process.env.MIN_PASSING_TESTS || '136', 10);
+          const output = fs.readFileSync('/tmp/test-output.log', 'utf8');
+
+          const passMatch = output.match(/# pass (\d+)/) || output.match(/ℹ pass (\d+)/);
+          const failMatch = output.match(/# fail (\d+)/) || output.match(/ℹ fail (\d+)/);
+          const totalMatch = output.match(/# tests (\d+)/) || output.match(/ℹ tests (\d+)/);
+
+          if (!passMatch) {
+            console.error('ERROR: Could not parse passing test count from `npm test` output.');
+            process.exit(1);
+          }
+
+          const passCount = parseInt(passMatch[1], 10);
+          const failCount = failMatch ? parseInt(failMatch[1], 10) : 0;
+          const totalCount = totalMatch ? parseInt(totalMatch[1], 10) : passCount;
+
+          console.log(`Test Gate Summary: total=${totalCount}, pass=${passCount}, fail=${failCount} (required >= ${minTests})`);
+
+          if (failCount > 0) {
+            console.error(`DEPLOYMENT BLOCKED: Expected 0 failing tests, found ${failCount}.`);
+            process.exit(1);
+          }
+
+          if (passCount < minTests) {
+            console.error(`DEPLOYMENT BLOCKED: Expected at least ${minTests} passing tests, but only ${passCount} passed.`);
+            process.exit(1);
+          }
+
+          console.log(`SUCCESS: ${passCount}/${minTests} passing tests verified with 0 failures. Ready for production deployment merge.`);
+          EOF
+
+      - name: Verify Crisis Tappability & Arron Soul Integrity (if static HTML present)
+        run: |
+          python3 - << 'PY'
+          import json, pathlib
+
+          soul_path = pathlib.Path("arron-knowledge.json")
+          if soul_path.exists():
+              soul = json.loads(soul_path.read_text(encoding="utf-8"))
+              assert "staySane" in soul, "arron-knowledge.json missing staySane root block"
+              print("arron-knowledge.json verified.")
+
+          for page_name in ["crisis.html", "arron.html", "arron-app.html"]:
+              p = pathlib.Path(page_name)
+              if p.exists():
+                  content = p.read_text(encoding="utf-8", errors="ignore").lower()
+                  assert "tel:999" in content, f"{page_name} missing tappable tel:999"
+                  assert "tel:116123" in content, f"{page_name} missing tappable Samaritans tel:116123"
+                  assert "sms:85258" in content, f"{page_name} missing tappable SHOUT sms:85258"
+                  assert "tel:111" in content, f"{page_name} missing tappable NHS tel:111"
+                  print(f"{page_name} crisis links verified tappable.")
+          PY
+
+      - name: Run Production Build Check
+        run: npm run build

@@ -1,0 +1,422 @@
+{
+  "version": "1.2.0",
+  "project": "Pleading Sanity",
+  "founder": "Shane Cooper",
+  "canonicalDomain": "https://pleadingsanity.co.uk",
+  "domain": "https://pleadingsanity.co.uk",
+  "secondaryDomain": "https://pleadingsanity.uk",
+  "outputTargets": [
+    "_headers",
+    "public/_headers"
+  ],
+  "gitBaseline": {
+    "repository": "https://github.com/pleadingSanity/pleadingsanity",
+    "branch": "main",
+    "headSha": "6c3afd91a7fc8e88c540db1b0990a1ee665d8ef5",
+    "solarBaselineSha": "dd9e54aa01f33bf5760538f4f25ed526ca0a7591",
+    "verifiedTestsPassing": 136
+  },
+  "philosophy": "Evolution, Not Erasure. Love Over Money. Zero third-party behavioral ad trackers, zero script injection vectors, strict perimeter isolation for Arron AI and payment-adjacent modules.",
+  "GreaterGoodPledgeBinding": {
+    "statuteRef": "PS-LAW-001",
+    "documentPath": "/.github/AI-GREATER-GOOD-LAW.md",
+    "creatorRevenueSharePercent": 90,
+    "movementAndAiStewardshipSharePercent": 10,
+    "coreSanctuaryFreeForever": true,
+    "equalAiFamily": [
+      "GPT",
+      "Claude",
+      "Gemini",
+      "Grok"
+    ]
+  },
+  "trustedDomains": {
+    "self": [
+      "'self'",
+      "https://pleadingsanity.co.uk",
+      "https://pleadingsanity.uk"
+    ],
+    "firebaseAndAuth": [
+      "https://apis.google.com",
+      "https://www.gstatic.com",
+      "https://www.googleapis.com",
+      "https://securetoken.googleapis.com",
+      "https://identitytoolkit.googleapis.com",
+      "https://firestore.googleapis.com",
+      "https://firebasestorage.googleapis.com",
+      "https://*.firebaseio.com",
+      "https://*.firebaseapp.com",
+      "https://accounts.google.com"
+    ],
+    "paymentAndCommerce": [
+      "https://js.stripe.com",
+      "https://checkout.stripe.com",
+      "https://api.stripe.com",
+      "https://www.paypal.com",
+      "https://www.paypalobjects.com",
+      "https://api-m.paypal.com"
+    ],
+    "liveStreamEmbeds": [
+      "https://www.youtube-nocookie.com",
+      "https://www.youtube.com",
+      "https://player.twitch.tv",
+      "https://player.kick.com"
+    ],
+    "fontsAndStyles": [
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com"
+    ],
+    "scripts": [
+      "'self'",
+      "https://apis.google.com",
+      "https://www.gstatic.com",
+      "https://js.stripe.com",
+      "https://www.paypal.com",
+      "https://www.paypalobjects.com"
+    ],
+    "connectArronProtected": [
+      "'self'",
+      "https://pleadingsanity.co.uk",
+      "https://firestore.googleapis.com",
+      "https://identitytoolkit.googleapis.com",
+      "https://securetoken.googleapis.com"
+    ],
+    "connectPaymentAdjacent": [
+      "'self'",
+      "https://pleadingsanity.co.uk",
+      "https://api.stripe.com",
+      "https://checkout.stripe.com",
+      "https://www.paypal.com",
+      "https://www.paypalobjects.com",
+      "https://api-m.paypal.com",
+      "https://firestore.googleapis.com",
+      "https://identitytoolkit.googleapis.com",
+      "https://securetoken.googleapis.com"
+    ]
+  },
+  "policies": {
+    "globalSanctuary": {
+      "purpose": "Default Content Security Policy across the Pleading Sanity sanctuary. Blocks unauthorized script origins, object embeds, and unapproved form targets.",
+      "routePatterns": [
+        "/*"
+      ],
+      "headers": {
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+        "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+        "Cross-Origin-Resource-Policy": "same-origin",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(self \"https://js.stripe.com\" \"https://checkout.stripe.com\" \"https://www.paypal.com\"), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=(), browsing-topics=()"
+      },
+      "directives": {
+        "default-src": [
+          "'self'"
+        ],
+        "script-src": [
+          "'self'",
+          "https://apis.google.com",
+          "https://www.gstatic.com"
+        ],
+        "script-src-elem": [
+          "'self'",
+          "https://apis.google.com",
+          "https://www.gstatic.com"
+        ],
+        "script-src-attr": [
+          "'none'"
+        ],
+        "style-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
+        "font-src": [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "data:"
+        ],
+        "img-src": [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://pleadingsanity.co.uk",
+          "https://pleadingsanity.uk",
+          "https://firebasestorage.googleapis.com",
+          "https://lh3.googleusercontent.com",
+          "https://images.unsplash.com"
+        ],
+        "media-src": [
+          "'self'",
+          "https://pleadingsanity.co.uk",
+          "blob:"
+        ],
+        "connect-src": [
+          "'self'",
+          "https://pleadingsanity.co.uk",
+          "https://pleadingsanity.uk",
+          "https://firestore.googleapis.com",
+          "https://identitytoolkit.googleapis.com",
+          "https://securetoken.googleapis.com",
+          "https://firebasestorage.googleapis.com",
+          "https://*.firebaseio.com",
+          "wss://*.firebaseio.com"
+        ],
+        "frame-src": [
+          "'self'",
+          "https://*.firebaseapp.com",
+          "https://accounts.google.com",
+          "https://www.youtube-nocookie.com",
+          "https://player.twitch.tv",
+          "https://player.kick.com"
+        ],
+        "worker-src": [
+          "'self'",
+          "blob:"
+        ],
+        "manifest-src": [
+          "'self'"
+        ],
+        "object-src": [
+          "'none'"
+        ],
+        "base-uri": [
+          "'self'"
+        ],
+        "form-action": [
+          "'self'"
+        ],
+        "frame-ancestors": [
+          "'self'"
+        ],
+        "upgrade-insecure-requests": []
+      }
+    },
+    "arronSanctuaryHardened": {
+      "purpose": "Strict zero-leakage policy for Arron AI Companion and Journal Vault. Restricts script execution exclusively to 'self' and essential Firebase Auth, banning all external payment, analytics, or third-party scripts and preventing any unauthorized request exfiltration.",
+      "routePatterns": [
+        "/arron*",
+        "/arron.html",
+        "/arron-app.html",
+        "/journal-vault*",
+        "/journal-vault.html"
+      ],
+      "headers": {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+        "Cross-Origin-Opener-Policy": "same-origin",
+        "Cross-Origin-Resource-Policy": "same-origin",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), browsing-topics=(), autoplay=()"
+      },
+      "directives": {
+        "default-src": [
+          "'self'"
+        ],
+        "script-src": [
+          "'self'",
+          "https://apis.google.com",
+          "https://www.gstatic.com"
+        ],
+        "script-src-elem": [
+          "'self'",
+          "https://apis.google.com",
+          "https://www.gstatic.com"
+        ],
+        "script-src-attr": [
+          "'none'"
+        ],
+        "style-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
+        "font-src": [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "data:"
+        ],
+        "img-src": [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://pleadingsanity.co.uk"
+        ],
+        "media-src": [
+          "'none'"
+        ],
+        "connect-src": [
+          "'self'",
+          "https://pleadingsanity.co.uk",
+          "https://firestore.googleapis.com",
+          "https://identitytoolkit.googleapis.com",
+          "https://securetoken.googleapis.com"
+        ],
+        "frame-src": [
+          "'self'",
+          "https://*.firebaseapp.com",
+          "https://accounts.google.com"
+        ],
+        "worker-src": [
+          "'self'"
+        ],
+        "object-src": [
+          "'none'"
+        ],
+        "base-uri": [
+          "'self'"
+        ],
+        "form-action": [
+          "'self'"
+        ],
+        "frame-ancestors": [
+          "'none'"
+        ],
+        "upgrade-insecure-requests": []
+      }
+    },
+    "paymentAdjacentHardened": {
+      "purpose": "Hardened perimeter for payment-linked and commercial modules: Shop (P.S. Apparel), Creator Hub (Founding 1,000 90/10 split), Support, and Insane Solar. Restricts script execution strictly to 'self', Stripe JS, PayPal SDK, and Firebase Auth while locking connect-src, frame-src, and form-action to verified checkout endpoints.",
+      "routePatterns": [
+        "/shop*",
+        "/shop.html",
+        "/creator*",
+        "/creator.html",
+        "/support*",
+        "/support.html",
+        "/insane-solar*",
+        "/insane-solar.html",
+        "/api/solar*",
+        "/.netlify/functions/create-checkout*",
+        "/.netlify/functions/stripe*",
+        "/.netlify/functions/paypal*",
+        "/.netlify/functions/solar*"
+      ],
+      "headers": {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Cache-Control": "no-store, must-revalidate",
+        "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+        "Cross-Origin-Resource-Policy": "same-origin",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(self \"https://js.stripe.com\" \"https://checkout.stripe.com\" \"https://www.paypal.com\"), usb=(), interest-cohort=(), browsing-topics=()"
+      },
+      "directives": {
+        "default-src": [
+          "'self'"
+        ],
+        "script-src": [
+          "'self'",
+          "https://js.stripe.com",
+          "https://www.paypal.com",
+          "https://www.paypalobjects.com",
+          "https://apis.google.com",
+          "https://www.gstatic.com"
+        ],
+        "script-src-elem": [
+          "'self'",
+          "https://js.stripe.com",
+          "https://www.paypal.com",
+          "https://www.paypalobjects.com",
+          "https://apis.google.com",
+          "https://www.gstatic.com"
+        ],
+        "script-src-attr": [
+          "'none'"
+        ],
+        "style-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
+        "font-src": [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "data:"
+        ],
+        "img-src": [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://pleadingsanity.co.uk",
+          "https://firebasestorage.googleapis.com",
+          "https://*.stripe.com",
+          "https://www.paypalobjects.com"
+        ],
+        "media-src": [
+          "'self'"
+        ],
+        "connect-src": [
+          "'self'",
+          "https://pleadingsanity.co.uk",
+          "https://api.stripe.com",
+          "https://checkout.stripe.com",
+          "https://www.paypal.com",
+          "https://www.paypalobjects.com",
+          "https://api-m.paypal.com",
+          "https://firestore.googleapis.com",
+          "https://identitytoolkit.googleapis.com",
+          "https://securetoken.googleapis.com"
+        ],
+        "frame-src": [
+          "'self'",
+          "https://js.stripe.com",
+          "https://checkout.stripe.com",
+          "https://www.paypal.com",
+          "https://*.firebaseapp.com",
+          "https://accounts.google.com"
+        ],
+        "worker-src": [
+          "'self'"
+        ],
+        "object-src": [
+          "'none'"
+        ],
+        "base-uri": [
+          "'self'"
+        ],
+        "form-action": [
+          "'self'",
+          "https://checkout.stripe.com",
+          "https://www.paypal.com"
+        ],
+        "frame-ancestors": [
+          "'none'"
+        ],
+        "upgrade-insecure-requests": []
+      }
+    },
+    "arronApiEndpoints": {
+      "purpose": "Server/Function API response lockdown for Arron proxy endpoints. Zero script execution or framing allowed on JSON payloads.",
+      "routePatterns": [
+        "/api/arron/*",
+        "/.netlify/functions/arron*"
+      ],
+      "headers": {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        "Cache-Control": "no-store, max-age=0"
+      },
+      "directives": {
+        "default-src": [
+          "'none'"
+        ],
+        "script-src": [
+          "'none'"
+        ],
+        "object-src": [
+          "'none'"
+        ],
+        "frame-ancestors": [
+          "'none'"
+        ]
+      }
+    }
+  }
+}

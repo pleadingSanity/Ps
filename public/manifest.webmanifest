@@ -1,0 +1,42 @@
+{
+  "name": "Pleading Sanity — Arron AI Companion",
+  "short_name": "Pleading Sanity",
+  "description": "A free mental health sanctuary built by Shane Cooper from lived experience. Rise From Madness · Evolution Not Erasure · Love Over Money.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "categories": ["health", "lifestyle", "medical", "social"],
+  "icons": [
+    {
+      "src": "/assets/aistudio/file_0000000028648243a3793ff13f6838b5_99d22e09.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Talk to Arron AI",
+      "short_name": "Arron AI",
+      "description": "Open Arron AI Companion — Stay Sane",
+      "url": "/?section=arron"
+    },
+    {
+      "name": "12 Calm Games",
+      "short_name": "Calm Games",
+      "description": "Play no-timer cosmic mental health games",
+      "url": "/?section=games"
+    },
+    {
+      "name": "Manifesto & New Gen Bible",
+      "short_name": "Manifesto",
+      "description": "Read Shane Cooper's Manifesto and New Gen Bible",
+      "url": "/?section=manifesto"
+    }
+  ]
+}

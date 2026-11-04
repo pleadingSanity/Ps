@@ -1,0 +1,351 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Private user account record containing email and authentication timestamps.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Unique Firebase Auth UID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address (private to owner)",
+          "maxLength": 254
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name",
+          "maxLength": 100
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Profile photo URL",
+          "maxLength": 1024
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Account creation server timestamp"
+        },
+        "lastActive": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last active server timestamp"
+        },
+        "isCreator": {
+          "type": "boolean",
+          "description": "Whether the user is a community creator"
+        }
+      },
+      "required": ["uid", "email", "displayName", "createdAt", "lastActive", "isCreator"]
+    },
+    "Profile": {
+      "title": "Profile",
+      "description": "Public sanctuary profile for a community member or Founding Creator.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "User UID matching document ID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Public display name",
+          "maxLength": 100
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Public avatar URL",
+          "maxLength": 1024
+        },
+        "bio": {
+          "type": "string",
+          "description": "Short personal bio or lived experience note",
+          "maxLength": 600
+        },
+        "youtube": {
+          "type": "string",
+          "description": "YouTube channel link",
+          "maxLength": 300
+        },
+        "twitter": {
+          "type": "string",
+          "description": "Twitter/X profile link",
+          "maxLength": 300
+        },
+        "instagram": {
+          "type": "string",
+          "description": "Instagram link",
+          "maxLength": 300
+        },
+        "tiktok": {
+          "type": "string",
+          "description": "TikTok link",
+          "maxLength": 300
+        },
+        "website": {
+          "type": "string",
+          "description": "Personal website link",
+          "maxLength": 300
+        },
+        "isFoundingCreator": {
+          "type": "boolean",
+          "description": "Whether user is part of the First 1,000 Founding Creators"
+        },
+        "joinedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Profile creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Profile update timestamp"
+        }
+      },
+      "required": ["uid", "displayName", "bio", "isFoundingCreator", "joinedAt"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "Relationship between a follower and a creator.",
+      "type": "object",
+      "properties": {
+        "followerId": {
+          "type": "string",
+          "description": "UID of the user following",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "followingId": {
+          "type": "string",
+          "description": "UID of the creator being followed",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when follow was created"
+        }
+      },
+      "required": ["followerId", "followingId", "createdAt"]
+    },
+    "Live": {
+      "title": "Live",
+      "description": "Live or scheduled sanctuary stream session via external embed link.",
+      "type": "object",
+      "properties": {
+        "creatorId": {
+          "type": "string",
+          "description": "UID of the creator hosting the live session",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "creatorName": {
+          "type": "string",
+          "description": "Display name of the host",
+          "maxLength": 100
+        },
+        "title": {
+          "type": "string",
+          "description": "Stream title",
+          "maxLength": 160
+        },
+        "description": {
+          "type": "string",
+          "description": "Stream description and topic",
+          "maxLength": 1000
+        },
+        "streamUrl": {
+          "type": "string",
+          "description": "YouTube, Twitch, or Kick stream link",
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "enum": ["live", "scheduled", "past"],
+          "description": "Current status of the live session"
+        },
+        "scheduledFor": {
+          "type": "string",
+          "description": "Human readable schedule date/time label",
+          "maxLength": 100
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Whether session is public in the sanctuary"
+        },
+        "replayAvailable": {
+          "type": "boolean",
+          "description": "Whether a replay is available"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp"
+        }
+      },
+      "required": ["creatorId", "creatorName", "title", "description", "streamUrl", "status", "scheduledFor", "isPublic", "replayAvailable", "createdAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Community sanctuary post sharing lived experience, reflection, or encouragement.",
+      "type": "object",
+      "properties": {
+        "authorId": {
+          "type": "string",
+          "description": "UID of the post author",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "authorName": {
+          "type": "string",
+          "description": "Display name of the author",
+          "maxLength": 100
+        },
+        "content": {
+          "type": "string",
+          "description": "Post text content",
+          "maxLength": 2000
+        },
+        "themeTag": {
+          "type": "string",
+          "description": "One of the 12 core visual themes or reflection categories",
+          "maxLength": 80
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["public", "friends"],
+          "description": "Visibility of the post"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp"
+        }
+      },
+      "required": ["authorId", "authorName", "content", "themeTag", "visibility", "createdAt"]
+    },
+    "CreatorApplication": {
+      "title": "CreatorApplication",
+      "description": "Application for the First 1,000 Founding Creator program (90/10 split).",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Applicant user UID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Applicant display name",
+          "maxLength": 100
+        },
+        "why": {
+          "type": "string",
+          "description": "Why the creator wants to join Pleading Sanity",
+          "maxLength": 1500
+        },
+        "links": {
+          "type": "string",
+          "description": "Links to existing channels or creative work",
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "approved", "declined"],
+          "description": "Application status"
+        },
+        "submittedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Submission server timestamp"
+        }
+      },
+      "required": ["userId", "displayName", "why", "links", "status", "submittedAt"]
+    },
+    "MoodLog": {
+      "title": "MoodLog",
+      "description": "Private daily check-in and 30-day sanity journey reflection log.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "date": {
+          "type": "string",
+          "description": "Check-in date formatted as YYYY-MM-DD",
+          "maxLength": 10
+        },
+        "score": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Sanity mood score from 1 (Storm/Heavy) to 5 (Rising/Superpower)"
+        },
+        "moodLabel": {
+          "type": "string",
+          "description": "Human-readable mood label",
+          "maxLength": 60
+        },
+        "energyLevel": {
+          "type": "string",
+          "enum": ["low", "balanced", "high"],
+          "description": "Self-reported energy level"
+        },
+        "note": {
+          "type": "string",
+          "description": "Honest 1-line reflection or grounding note",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Check-in timestamp"
+        }
+      },
+      "required": ["userId", "date", "score", "moodLabel", "energyLevel", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Private user account documents containing email and auth timestamps."
+    },
+    "/users/{userId}/mood_logs/{logDate}": {
+      "schema": { "$ref": "#/entities/MoodLog" },
+      "description": "Private daily check-in mood logs for the 30-day sanity journey heatmap."
+    },
+    "/profiles/{userId}": {
+      "schema": { "$ref": "#/entities/Profile" },
+      "description": "Public sanctuary profile documents."
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "Creator follow relationships."
+    },
+    "/lives/{liveId}": {
+      "schema": { "$ref": "#/entities/Live" },
+      "description": "Live, scheduled, and past sanctuary streams."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Sanctuary community reflections and posts."
+    },
+    "/creator_applications/{appId}": {
+      "schema": { "$ref": "#/entities/CreatorApplication" },
+      "description": "Founding Creator 90/10 applications."
+    }
+  }
+}
