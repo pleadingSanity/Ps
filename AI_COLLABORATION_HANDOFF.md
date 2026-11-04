@@ -49,3 +49,30 @@ Never mass-merge unrelated PRs or touch protected PR #92.
 ## Handoff format for every change
 Date; current production main SHA; prototype SHA; production deployed SHA (if checked); inspected files; exact defect; proposed solution; changed files; commands/tests/results; remaining risks; PR URL; deployment status. If not verified, write "not verified".
 Never place credentials in this file. Never claim ongoing background collaboration without an actual scheduler/connector.
+
+## Founder-confirmed dual-repository release protocol — 2026-11-04
+
+This section records Shane's latest instructions for future contributors. It does not grant autonomous access, create automatic cross-repo synchronization, or change the production charter.
+
+1. **Read both repositories first.** This sandbox reads this handoff first; production agents read the production operating charter first, then this handoff if accessible. Always check the current production main commit, relevant PRs, CI and deployed Netlify SHA. Do not assume a previous snapshot remains current.
+2. **Prototype in `pleadingSanity/Ps`.** Build and test ideas here without deploying this React/Vite app over production. Treat the prototype as experimental, not a second production source.
+3. **Compare against production.** Prefer concrete improvements over merely different styling. Preserve every existing game, route, accessible crisis path, the original founder story and manifesto, the Arron companion disclaimer, Insane Radio's artist promise and rotation, and the official clothing specifications.
+4. **Port selectively.** The two repos are distinct: a PR cannot directly merge `Ps` into the unrelated production repository. Manually adapt one reviewed improvement at a time to a focused production branch, optionally trialling uncertain work in `dolas-duplicate`. Open a production PR against `main` with a precise diff, rollback and verification.
+5. **Founder approval before merge.** Shane's latest direction is manual review and his approval for production merges. Do not auto-merge from this sandbox or bypass the production charter's restrictions. Never touch protected PR #92 or the read-only `staging` branch.
+6. **Prove it.** Report the exact source SHA, destination SHA, commands run, tests passed/failed, accessibility, mobile, consent/privacy, link and crisis checks, and a real preview if available. No “nothing broken” claim without evidence.
+7. **No invented guarantees.** Do not claim device-only journal or Arron processing without verifying actual Firebase/network behavior. Do not claim medical benefits for tones, guaranteed revenue allocation, no solar commission, or real-time dashboard telemetry without supporting implementation.
+
+### Baseline verified from GitHub during this review
+- Production main: `47c2b8abb5c9b311b5ff3c4d430208390a142d7f` (Insane Radio polish and Arron crisis links).
+- Studio main: `351ba9c5d9ebf62d47bd88b59251820fe219c8a3` (collaboration handoff).
+- Production Netlify was reported ready at the time of review; production browser smoke testing and Studio test-suite execution **not run** in this review.
+- Existing prototype components reviewed by source: `HomepageMusicPlayer.tsx`, `ConsentBanner.tsx`, `seoAndShare.ts`, `AuditPanel.tsx`. No component has been ported by this documentation change.
+
+### Next focused checks
+- Compare actual homepage music behavior (explicit play, pause, 15% volume and third-party requests) with the prototype before considering any port.
+- Verify consent gates network requests, not just UI preference.
+- Match SEO metadata to real HTML routes, not prototype-only section state.
+- Replace static audit-status claims with verifiable source data or label them clearly as examples.
+- Run `npm test`, `npm run lint`, `npm run build` in the sandbox and production's applicable checks before a code PR. Record failures accurately.
+
+**Rise From Madness. Evolution, Not Erasure. Connect The Survivors.**
